@@ -1,0 +1,39 @@
+{
+  "users": [
+    {
+      "id": "user123",
+      "name": "Adonawit",
+      "email": "adonawit@gmail.com",
+      "role": "seller",
+      "storeId": 1,
+      "joinDate": "2023-01-15",
+      "profileImage": "/images/profile1.jpg"
+    },
+    {
+      "id": "user234",
+      "name": "Michael ",
+      "email": "michael@example.com",
+      "role": "seller",
+      "storeId": 2,
+      "joinDate": "2022-11-20",
+      "profileImage": "/images/profile2.jpg"
+    },
+    {
+      "id": "user345",
+      "name": "Alazar",
+      "email": "alazar@gmail.com",
+      "role": "seller",
+      "storeId": 3,
+      "joinDate": "2023-03-10",
+      "profileImage": "/images/profile3.jpg"
+    },
+    {
+      "id": "user456",
+      "name": "Abid",
+      "email": "abid@gmail.com",
+      "role": "buyer",
+      "joinDate": "2023-05-20",
+      "profileImage": "/images/profile4.jpg"
+    }
+  ]
+} 

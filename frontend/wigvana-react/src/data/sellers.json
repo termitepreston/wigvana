@@ -1,0 +1,78 @@
+{
+  "sellers": [
+    {
+      "id": 1,
+      "name": "Glamour Wigs",
+      "description": "Premium quality wigs and hair extensions. Specializing in natural and synthetic wigs with expert styling services.",
+      "rating": 4.7,
+      "reviewCount": 156,
+      "productCount": 45,
+      "joinDate": "January 2024",
+      "location": "Bole, Addis Ababa",
+      "categories": ["Natural", "Synthetic", "Lace Front"],
+      "reviews": [
+        {
+          "id": 1,
+          "userName": "Sarah M.",
+          "rating": 5,
+          "comment": "Excellent quality wigs and great customer service!",
+          "date": "2024-03-10"
+        },
+        {
+          "id": 2,
+          "userName": "Helen T.",
+          "rating": 4,
+          "comment": "Very satisfied with my purchase. The wig looks very natural.",
+          "date": "2024-03-05"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Royal Hair Collection",
+      "description": "Luxury human hair wigs and extensions. Offering custom wig making and styling services.",
+      "rating": 4.9,
+      "reviewCount": 203,
+      "productCount": 38,
+      "joinDate": "December 2023",
+      "location": "Kazanchis, Addis Ababa",
+      "categories": ["Human Hair", "Full Lace", "Custom"],
+      "reviews": [
+        {
+          "id": 1,
+          "userName": "Lisa K.",
+          "rating": 5,
+          "comment": "The quality is outstanding! Worth every penny.",
+          "date": "2024-03-12"
+        },
+        {
+          "id": 2,
+          "userName": "Mary J.",
+          "rating": 5,
+          "comment": "Amazing customer service and beautiful wigs!",
+          "date": "2024-03-08"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Addis Wig Boutique",
+      "description": "Affordable and stylish wigs for every occasion. Wide selection of synthetic and natural hair wigs.",
+      "rating": 4.5,
+      "reviewCount": 89,
+      "productCount": 30,
+      "joinDate": "February 2024",
+      "location": "Piassa, Addis Ababa",
+      "categories": ["Synthetic", "Natural", "Braided"],
+      "reviews": [
+        {
+          "id": 1,
+          "userName": "Rebecca A.",
+          "rating": 4,
+          "comment": "Good quality wigs at reasonable prices.",
+          "date": "2024-03-15"
+        }
+      ]
+    }
+  ]
+} 
