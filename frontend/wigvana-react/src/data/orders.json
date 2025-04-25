@@ -1,0 +1,46 @@
+{
+  "orders": [
+    {
+      "id": "order123",
+      "userId": "user456",
+      "userName": "Jane Doe",
+      "sellerId": 1,
+      "items": [
+        {
+          "productId": 1,
+          "name": "Natural Wave Wig",
+          "price": 5000,
+          "quantity": 1,
+          "color": "Natural Black",
+          "length": "18 inch"
+        }
+      ],
+      "total": 5000,
+      "status": "completed",
+      "date": "2024-03-15",
+      "shippingAddress": "Addis Ababa, Ethiopia",
+      "paymentMethod": "cash"
+    },
+    {
+      "id": "order234",
+      "userId": "user789",
+      "userName": "Mary Smith",
+      "sellerId": 2,
+      "items": [
+        {
+          "productId": 2,
+          "name": "Straight Synthetic Wig",
+          "price": 3500,
+          "quantity": 2,
+          "color": "Brown",
+          "length": "16 inch"
+        }
+      ],
+      "total": 7000,
+      "status": "processing",
+      "date": "2024-03-20",
+      "shippingAddress": "Bahir Dar, Ethiopia",
+      "paymentMethod": "bank_transfer"
+    }
+  ]
+} 
