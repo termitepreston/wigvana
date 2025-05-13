@@ -17,6 +17,7 @@ import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as FaqImport } from './routes/faq'
 import { Route as ContactImport } from './routes/contact'
+import { Route as CartImport } from './routes/cart'
 import { Route as BecomeSellerImport } from './routes/become-seller'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
@@ -57,6 +58,12 @@ const FaqRoute = FaqImport.update({
 const ContactRoute = ContactImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CartRoute = CartImport.update({
+  id: '/cart',
+  path: '/cart',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -107,6 +114,13 @@ declare module '@tanstack/react-router' {
       path: '/become-seller'
       fullPath: '/become-seller'
       preLoaderRoute: typeof BecomeSellerImport
+      parentRoute: typeof rootRoute
+    }
+    '/cart': {
+      id: '/cart'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof CartImport
       parentRoute: typeof rootRoute
     }
     '/contact': {
@@ -167,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/become-seller': typeof BecomeSellerRoute
+  '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
@@ -180,6 +195,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/become-seller': typeof BecomeSellerRoute
+  '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
@@ -194,6 +210,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/become-seller': typeof BecomeSellerRoute
+  '/cart': typeof CartRoute
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
@@ -209,6 +226,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/become-seller'
+    | '/cart'
     | '/contact'
     | '/faq'
     | '/login'
@@ -221,6 +239,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/become-seller'
+    | '/cart'
     | '/contact'
     | '/faq'
     | '/login'
@@ -233,6 +252,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/become-seller'
+    | '/cart'
     | '/contact'
     | '/faq'
     | '/login'
@@ -247,6 +267,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BecomeSellerRoute: typeof BecomeSellerRoute
+  CartRoute: typeof CartRoute
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
@@ -260,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BecomeSellerRoute: BecomeSellerRoute,
+  CartRoute: CartRoute,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
@@ -282,6 +304,7 @@ export const routeTree = rootRoute
         "/",
         "/about",
         "/become-seller",
+        "/cart",
         "/contact",
         "/faq",
         "/login",
@@ -299,6 +322,9 @@ export const routeTree = rootRoute
     },
     "/become-seller": {
       "filePath": "become-seller.tsx"
+    },
+    "/cart": {
+      "filePath": "cart.tsx"
     },
     "/contact": {
       "filePath": "contact.tsx"
