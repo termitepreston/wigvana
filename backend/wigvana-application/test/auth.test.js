@@ -2,8 +2,10 @@ import { describe, expect, it, beforeAll, afterAll } from "vitest";
 import supertest from "supertest";
 import { MongoDBContainer } from "@testcontainers/mongodb";
 import mongoose from "mongoose";
+import app from "../src/app.js";
 
 let mongoContainer;
+const request = supertest(app);
 
 beforeAll(
 	async () => {

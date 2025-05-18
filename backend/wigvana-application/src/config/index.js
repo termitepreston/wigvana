@@ -1,4 +1,5 @@
 import Joi from "joi";
+import "dotenv/config";
 
 const envVarsSchema = Joi.object({
 	NODE_ENV: Joi.string().valid("development", "test", "production").required(),
@@ -9,7 +10,7 @@ const envVarsSchema = Joi.object({
 	JWT_REFRESH_SECRET: Joi.string().required(),
 	ACCESS_TOKEN_EXPIRY: Joi.string().default("15m"),
 	REFRESH_TOKEN_EXPIRY: Joi.string().default("7d"),
-});
+}).unknown();
 
 const { value: envVars, error } = envVarsSchema.validate(process.env);
 
