@@ -5,7 +5,7 @@
   "description": "Wigvana backend application server.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "vitest"
   },
   "packageManager": "pnpm@10.8.0",
   "dependencies": {
@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "mongodb-memory-server": "^10.1.4",
+    "@testcontainers/mongodb": "^10.26.0",
     "nodemon": "^3.1.10",
     "supertest": "^7.1.1",
     "vitest": "^3.1.3"
