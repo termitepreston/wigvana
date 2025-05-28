@@ -1,10 +1,15 @@
-\documentclass[a4paper,12pt]{article}
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{graphicx}
+\usepackage{float}
 
 % Custom margins setup
 \usepackage[left=2cm, right=2cm, top=2cm, bottom=2cm]{geometry}
 
 % Using fontspec for font management
 \usepackage{fontspec}
+\usepackage[utf8]{inputenc}
+\usepackage{minted}
 \setmainfont{STIX Two Text}
 
 % Package for creating landscape pages within a document
@@ -105,6 +110,7 @@ Goals:
 
 Goals:
 
+
 \begin{enumerate}
     \item Register \& set up seller profiles.
 
@@ -149,5 +155,87 @@ Goals:
 %     \section{Landscape Section}
 %     This section is rendered in landscape orientation.
 % \end{landscape}
+
+\section{Authentication}
+
+\subsection{Authentication flows}
+\begin{enumerate}
+    \item Login flow
+          \begin{figure}[H]
+              \centering
+              \includegraphics[width=\textwidth]{images/login-flow.png}
+              \caption{Login flow.}
+              \label{fig:login_flow}
+          \end{figure}
+
+          What happens:
+          \begin{itemize}
+              \item Server validate credentials.
+              \item Generates:
+                    \begin{enumerate}
+                        \item Short-lived access tokens (e.g., 15-30 mins)
+                              \begin{minted}[linenos,breaklines]{json}
+{
+  "sub": "user123",
+  "roles": ["user"],
+  "iat": 1620000000,
+  "exp": 1620001800
+}
+                                
+                                \end{minted}
+                        \item Long lived refresh tokens (e.g., 7 days) stored in \texttt{HTTPOnly} cookie.
+                    \end{enumerate}
+              \item Client stores access token in memory (React/Vue state, Angular service)
+          \end{itemize}
+    \item Accessing protected resources.
+          \begin{figure}[H]
+              \centering
+              \includegraphics[width=\textwidth]{images/protected.png}
+              \caption{Protected resource access.}
+              \label{fig:procted_access}
+          \end{figure}
+
+          What happens:
+
+          \begin{itemize}
+              \item Validate JWT signature using server's secret/public key.
+              \item Check \texttt{exp} claim.
+              \item Verify token wasn't revoked (optional denylist for critical systems)
+          \end{itemize}
+    \item Access token expiration (silent refresh)
+          \begin{figure}[H]
+              \centering
+              \includegraphics[width=\textwidth]{images/silent-refresh.png}
+              \caption{Silent refresh flow.}
+              \label{fig:silent refresh}
+          \end{figure}
+
+          Considerations
+
+          \begin{itemize}
+              \item Refresh token is never exposed to JS (\texttt{HttpOnly} cookie)
+
+              \item Server rotates refresh tokens (invalidates old one)
+
+              \item If refresh token is invalid/expired, force logout
+          \end{itemize}
+    \item Logout
+          \begin{figure}[H]
+              \centering
+              \includegraphics[width=\textwidth]{images/logout.png}
+              \caption{Logout flow.}
+              \label{fig:logout}
+          \end{figure}
+
+          Critical actions:
+
+          \begin{itemize}
+              \item Server adds refresh token to denylist (or deletes from DB)
+
+              \item Client removes access token from memory
+
+              \item Cookie is cleared via \texttt{Set-Cookie} header
+          \end{itemize}
+\end{enumerate}
 
 \end{document}

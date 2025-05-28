@@ -19,3 +19,10 @@ To run the front-end dev mode:
 pnpm --filter=wigvana-react run dev
 
 ```
+
+## Notes
+
+- Used `openssl rand -hex 48` to generate secrets for jwt generation.
+- Used `joi` to validate incoming environmental variables.
+- Used `morgan` to log incoming http requests.
+- Used `pino` for high performance multi transport logging.
