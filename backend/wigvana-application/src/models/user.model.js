@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { isEmail } from "validator";
 import argon2 from "argon2";
 
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
 	email: {
 		type: String,
 		required: true,
@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
 	password: { type: String, required: true },
 });
 
-userSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function (next) {
 	if (!this.isModified("password")) return next();
 
 	try {
@@ -23,8 +23,8 @@ userSchema.pre("save", async function (next) {
 	}
 });
 
-userSchema.methods.comparePassword = async function (candidatePassword) {
+UserSchema.methods.comparePassword = async function (candidatePassword) {
 	return argon2.verify(this.password, candidatePassword);
 };
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model("User", UserSchema);
