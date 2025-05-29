@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  graphdb:
+    # Optional, for RDF store. GraphDB Free is a good option.
+    image: ontotext/graphdb:10.6.0 # Check for latest version
+    container_name: ecommerce_graphdb
+    ports:
+      - "7200:7200"
+    volumes:
+      - graphdb_data:/opt/graphdb/home
+    # environment:
+    #   GDB_JAVA_OPTS: "-Xmx2g -Xms2g" # Adjust memory as needed
+
+volumes:
+  mongo_data:
+  redis_data:
+  graphdb_data:

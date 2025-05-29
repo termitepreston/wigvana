@@ -1,34 +1,41 @@
-import Joi from "joi";
-import "dotenv/config";
+import dotenv from "dotenv";
+import { z } from "zod";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const envVarsSchema = Joi.object({
-	NODE_ENV: Joi.string().valid("development", "test", "production").required(),
-	PORT: Joi.number().default(3000),
-	MONGO_URI: Joi.string().required(),
-	REDIS_URL: Joi.string().required(),
-	JWT_ACCESS_SECRET: Joi.string().required(),
-	JWT_REFRESH_SECRET: Joi.string().required(),
-	ACCESS_TOKEN_EXPIRY: Joi.string().default("15m"),
-	REFRESH_TOKEN_EXPIRY: Joi.string().default("7d"),
-}).unknown();
+// Handle __dirname in ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const { value: envVars, error } = envVarsSchema.validate(process.env);
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-if (error) throw new Error(`Configuration validation error: ${error.message}.`);
+const envVarsSchema = z.object({
+  NODE_ENV: z
+    .enum(["development", "production", "test"])
+    .default("development"),
+  PORT: z.coerce.number().default(3000),
+  MONGO_URI: z.string().url(),
+  REDIS_URL: z.string().url(),
+  GRAPHDB_URL: z.string().url().optional(),
+  GRAPHDB_REPOSITORY: z.string().optional(),
+  JWT_SECRET: z.string().min(1),
+  JWT_ACCESS_TOKEN_EXPIRATION_MINUTES: z.coerce.number().default(15),
+  JWT_REFRESH_TOKEN_EXPIRATION_DAYS: z.coerce.number().default(7),
+  APP_BASE_URL: z.string().url().default("http://localhost:3000"),
+  LOG_LEVEL: z.string().default("info"),
+});
 
-export default {
-	env: envVars.NODE_ENV,
-	port: envVars.PORT,
-	mongo: {
-		url: envVars.MONGO_URI,
-	},
-	redis: {
-		url: envVars.REDIS_URL,
-	},
-	jwt: {
-		accessSecret: envVars.JWT_ACCESS_SECRET,
-		refreshSecret: envVars.JWT_REFRESH_SECRET,
-		accessExpiry: envVars.ACCESS_TOKEN_EXPIRY,
-		refreshExpiry: envVars.REFRESH_TOKEN_EXPIRY,
-	},
-};
+/**
+ * @type {ReturnType<envVarsSchema.parse>}
+ */
+let envConfig;
+
+try {
+  envConfig = envVarsSchema.parse(process.env);
+} catch (error) {
+  // Log the detailed error if validation fails
+  console.error("Environment variable validation failed:", error.errors);
+  process.exit(1); // Exit if critical env vars are missing/invalid
+}
+
+export default envConfig;
