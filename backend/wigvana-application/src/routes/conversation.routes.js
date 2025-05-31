@@ -3,9 +3,9 @@ import { conversationController } from "../controllers/conversation.controller.j
 import { protect, authorize } from "../middlewares/auth.middleware.js";
 import validate from "../middlewares/validate.middleware.js";
 import {
-  getConversationParamsSchema,
-  sendMessageSchema,
-  initiateConversationSchema, // For POST /
+	getConversationParamsSchema,
+	sendMessageSchema,
+	initiateConversationSchema, // For POST /
 } from "../dtos/conversation.dto.js";
 
 const router = express.Router();
@@ -57,10 +57,10 @@ router.use(protect);
  *         description: Context (product, order, or seller) not found.
  */
 router.post(
-  "/", // Corresponds to POST /api/v1/conversations
-  authorize(["buyer"]), // Only buyers can initiate this way
-  validate(initiateConversationSchema),
-  conversationController.initiateConversation,
+	"/", // Corresponds to POST /api/v1/conversations
+	authorize(["buyer"]), // Only buyers can initiate this way
+	validate(initiateConversationSchema),
+	conversationController.initiateConversation,
 );
 
 /**
@@ -88,9 +88,9 @@ router.post(
  *         description: Conversation not found.
  */
 router.get(
-  "/:conversationId",
-  validate(getConversationParamsSchema),
-  conversationController.getConversationDetails,
+	"/:conversationId",
+	validate(getConversationParamsSchema),
+	conversationController.getConversationDetails,
 );
 
 /**
@@ -126,9 +126,9 @@ router.get(
  *         description: Conversation not found.
  */
 router.post(
-  "/:conversationId/messages",
-  validate(sendMessageSchema),
-  conversationController.sendMessage,
+	"/:conversationId/messages",
+	validate(sendMessageSchema),
+	conversationController.sendMessage,
 );
 
 export default router;

@@ -109,6 +109,37 @@ import {
  *           type: integer
  *         totalResults:
  *           type: integer
+ *     ProductImage:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: string
+ *           format: uuid
+ *         productId:
+ *           type: string
+ *           format: uuid
+ *         imageUrl:
+ *           type: string
+ *           format: url
+ *         altText:
+ *           type: string
+ *           nullable: true
+ *         isCover:
+ *           type: boolean
+ *           default: false
+ *         displayOrder:
+ *           type: integer
+ *           default: 0
+ *         createdAt:
+ *           type: string
+ *           format: date-time
+ *         updatedAt:
+ *           type: string
+ *           format: date-time
+ *       required:
+ *         - id
+ *         - productId
+ *         - imageUrl
  *     Review:
  *       type: object
  *       properties:

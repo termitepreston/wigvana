@@ -7,6 +7,9 @@ import User from "../models/User.model.js";
 import { redisService } from "./redis.service.js";
 import config from "../config/index.js";
 import ApiError from "../errors/ApiError.js";
+import UnauthorizedError from "../errors/UnauthorizedError.js";
+import BadRequestError from "../errors/BadRequestError.js";
+import ForbiddenError from "../errors/ForbiddenError.js";
 import logger from "../utils/logger.js";
 // import { mailService } from './mail.service.js'; // For actual email sending
 
@@ -54,12 +57,7 @@ const verifyToken = async (token, secret) => {
 	return new Promise((resolve, reject) => {
 		jwt.verify(token, secret, (err, decoded) => {
 			if (err) {
-				return reject(
-					new ApiError(
-						httpStatusCodes.UNAUTHORIZED,
-						"Invalid or expired token",
-					),
-				);
+				return reject(new UnauthorizedError("Invalid or expired token"));
 			}
 			resolve(decoded);
 		});
@@ -73,7 +71,7 @@ const verifyToken = async (token, secret) => {
  */
 const registerUser = async (userData) => {
 	if (await User.findOne({ email: userData.email })) {
-		throw new ApiError(httpStatusCodes.BAD_REQUEST, "Email already taken");
+		throw new BadRequestError("Email already taken");
 	}
 
 	const hashedPassword = await bcrypt.hash(userData.password, 10); // Hash here, not in model pre-save directly from DTO
@@ -117,21 +115,16 @@ const loginUser = async (loginData) => {
 	const user = await User.findOne({ email: loginData.email });
 
 	if (!user || !(await user.comparePassword(loginData.password))) {
-		throw new ApiError(
-			httpStatusCodes.UNAUTHORIZED,
-			"Incorrect email or password",
-		);
+		throw new UnauthorizedError("Incorrect email or password");
 	}
 
 	if (!user.emailVerified) {
-		throw new ApiError(
-			httpStatusCodes.FORBIDDEN,
+		throw new UnauthorizedError(
 			"Email not verified. Please check your inbox for a verification link.",
 		);
 	}
 	if (user.accountStatus !== "active") {
-		throw new ApiError(
-			httpStatusCodes.FORBIDDEN,
+		throw new ForbiddenError(
 			`Account is ${user.accountStatus}. Please contact support.`,
 		);
 	}
@@ -161,7 +154,7 @@ const refreshAccessToken = async (oldRefreshToken) => {
 			!payload.sub ||
 			payload.type !== "refresh"
 		) {
-			throw new ApiError(httpStatusCodes.UNAUTHORIZED, "Invalid refresh token");
+			throw new UnauthorizedError("Invalid refresh token");
 		}
 
 		const userId = payload.sub;
@@ -174,22 +167,16 @@ const refreshAccessToken = async (oldRefreshToken) => {
 
 		const tokenExists = await redisService.get(redisKey);
 		if (!tokenExists) {
-			throw new ApiError(
-				httpStatusCodes.UNAUTHORIZED,
-				"Refresh token not found or revoked",
-			);
+			throw new UnauthorizedError("Refresh token not found or revoked");
 		}
 
 		const user = await User.findById(userId);
 		if (!user) {
-			throw new ApiError(httpStatusCodes.UNAUTHORIZED, "User not found");
+			throw new UnauthorizedError("User not found");
 		}
 		if (user.accountStatus !== "active") {
 			await redisService.del(redisKey); // Revoke token if account is not active
-			throw new ApiError(
-				httpStatusCodes.FORBIDDEN,
-				`Account is ${user.accountStatus}.`,
-			);
+			throw new ForbiddenError(`Account is ${user.accountStatus}.`);
 		}
 
 		const { accessToken } = generateTokens(userId); // Only new access token
@@ -201,7 +188,7 @@ const refreshAccessToken = async (oldRefreshToken) => {
 			error.statusCode === httpStatusCodes.UNAUTHORIZED
 		)
 			throw error;
-		throw new ApiError(httpStatusCodes.UNAUTHORIZED, "Could not refresh token");
+		throw new UnauthorizedError("Could not refresh token");
 	}
 };
 
@@ -257,10 +244,7 @@ const verifyEmail = async (token) => {
 	});
 
 	if (!user) {
-		throw new ApiError(
-			httpStatusCodes.BAD_REQUEST,
-			"Invalid or expired email verification token.",
-		);
+		throw new BadRequestError("Invalid or expired email verification token.");
 	}
 
 	user.emailVerified = true;
