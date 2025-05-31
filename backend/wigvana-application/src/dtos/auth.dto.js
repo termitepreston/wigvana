@@ -45,6 +45,49 @@ import { z } from "zod";
  *           format: password
  *           example: "password123"
  *
+ *     UserResponse:
+ *        type: object
+ *        properties:
+ *          _id:
+ *            type: string
+ *            format: uuid
+ *          firstName:
+ *            type: string
+ *          lastName:
+ *            type: string
+ *          email:
+ *            type: string
+ *          roles:
+ *            type: array
+ *            items: { type: string }
+ *          emailVerified:
+ *            type: boolean
+ *          emailVerificationToken:
+ *            type: string
+ *          emailVerificationTokenExpiresAt:
+ *            type: string
+ *            format: date
+ *          passwordResetToken:
+ *            type: string
+ *          passwordResetTokenExpiresAt:
+ *            type: string
+ *            format: date
+ *          phoneNumber:
+ *            type: string
+ *          profilePictureUrl:
+ *            type: string
+ *          accountStatus:
+ *            type: array
+ *            items: { type: string }
+ *          lastLoginAt:
+ *            type: string
+ *            format: date
+ *          preferredLocale:
+ *            type: string
+ *          preferredCurrency:
+ *            type: string
+ *
+ *
  *     AuthResponse: # Common response for login/register
  *       type: object
  *       properties:

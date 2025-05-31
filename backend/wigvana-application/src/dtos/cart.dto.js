@@ -95,52 +95,70 @@ import { objectIdSchema } from "./common.dto.js";
  *           minimum: 0 # Allow 0 to effectively remove item, or handle removal separately.
  *                      # Let's assume minimum 1 for update, and 0 means delete.
  *                      # For this requirement, PUT is for quantity > 0.
+ *     MergeAnonymousCartDto:
+ *       type: object
+ *       required:
+ *         - anonymousCartId
+ *       properties:
+ *         anonymousCartId:
+ *           type: string
+ *           format: uuid # Assuming your anonymousCartToken is a UUID
+ *           description: "The ID (anonymousCartToken) of the anonymous cart to be merged into the authenticated buyer's cart."
+ *           example: "a1b2c3d4-e5f6-7890-1234-567890abcdef"
  */
 
 export const createCartSchema = z.object({
-  body: z.object({
-    productId: objectIdSchema,
-    variantId: objectIdSchema,
-    quantity: z.coerce.number().int().min(1),
-  }),
+	body: z.object({
+		productId: objectIdSchema,
+		variantId: objectIdSchema,
+		quantity: z.coerce.number().int().min(1),
+	}),
 });
 
 export const addItemToCartSchema = z.object({
-  params: z.object({
-    cartId: objectIdSchema,
-  }),
-  body: z.object({
-    productId: objectIdSchema,
-    variantId: objectIdSchema,
-    quantity: z.coerce.number().int().min(1),
-  }),
+	params: z.object({
+		cartId: objectIdSchema,
+	}),
+	body: z.object({
+		productId: objectIdSchema,
+		variantId: objectIdSchema,
+		quantity: z.coerce.number().int().min(1),
+	}),
 });
 
 export const viewCartParamsSchema = z.object({
-  params: z.object({
-    cartId: objectIdSchema,
-  }),
+	params: z.object({
+		cartId: objectIdSchema,
+	}),
 });
 
 export const updateCartItemSchema = z.object({
-  params: z.object({
-    cartId: objectIdSchema,
-    itemId: objectIdSchema,
-  }),
-  body: z.object({
-    quantity: z.coerce.number().int().min(1), // Quantity must be at least 1 for update
-  }),
+	params: z.object({
+		cartId: objectIdSchema,
+		itemId: objectIdSchema,
+	}),
+	body: z.object({
+		quantity: z.coerce.number().int().min(1), // Quantity must be at least 1 for update
+	}),
 });
 
 export const removeCartItemParamsSchema = z.object({
-  params: z.object({
-    cartId: objectIdSchema,
-    itemId: objectIdSchema,
-  }),
+	params: z.object({
+		cartId: objectIdSchema,
+		itemId: objectIdSchema,
+	}),
 });
 
 export const clearCartParamsSchema = z.object({
-  params: z.object({
-    cartId: objectIdSchema,
-  }),
+	params: z.object({
+		cartId: objectIdSchema,
+	}),
+});
+
+export const mergeAnonymousCartSchema = z.object({
+	body: z.object({
+		anonymousCartId: objectIdSchema.describe(
+			"The ID (anonymousCartToken) of the anonymous cart to merge.",
+		),
+	}),
 });

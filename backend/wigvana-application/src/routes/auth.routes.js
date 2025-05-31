@@ -2,9 +2,9 @@ import express from "express";
 import { authController } from "../controllers/auth.controller.js";
 import validate from "../middlewares/validate.middleware.js";
 import {
-  registerUserDtoSchema,
-  loginUserDtoSchema,
-  refreshTokenDtoSchema,
+	registerUserDtoSchema,
+	loginUserDtoSchema,
+	refreshTokenDtoSchema,
 } from "../dtos/auth.dto.js";
 import { protect } from "../middlewares/auth.middleware.js";
 
@@ -44,9 +44,9 @@ const router = express.Router();
  *               $ref: '#/components/schemas/ErrorResponse'
  */
 router.post(
-  "/register",
-  validate(registerUserDtoSchema),
-  authController.register,
+	"/register",
+	validate(registerUserDtoSchema),
+	authController.register,
 );
 
 /**
@@ -117,9 +117,9 @@ router.post("/logout", protect, authController.logout); // protect ensures req.u
  *         description: Unauthorized (e.g., invalid or expired refresh token)
  */
 router.post(
-  "/refresh-token",
-  validate(refreshTokenDtoSchema),
-  authController.refreshTokens,
+	"/refresh-token",
+	validate(refreshTokenDtoSchema),
+	authController.refreshTokens,
 );
 
 /**

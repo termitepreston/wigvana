@@ -18,6 +18,14 @@ import { z } from "zod";
  *       schema:
  *         type: integer
  *         default: 10
+ *     pathConversationId:
+ *       name: conversationId
+ *       in: path
+ *       required: true
+ *       description: The ID of the conversation.
+ *       schema:
+ *         type: string
+ *         format: uuid
  *     pathProductId:
  *       name: productId
  *       in: path
@@ -58,6 +66,14 @@ import { z } from "zod";
  *       schema:
  *         type: string
  *         format: uuid
+ *     pathOrderId:
+ *        name: orderId
+ *        id: path
+ *        required: true
+ *        description: The ID of the order.
+ *        schema:
+ *          type: string
+ *          format: uuid
  *     pathReviewId:
  *       name: reviewId
  *       in: path
@@ -66,6 +82,14 @@ import { z } from "zod";
  *       schema:
  *         type: string
  *         format: uuid
+ *     pathUserId:
+ *       name: userId
+ *       in: path
+ *       required: true
+ *       description: The ID of the user.
+ *       schema:
+ *        type: string
+ *        format: uuid
  *     pathAddressId:
  *       name: addressId
  *       in: path
@@ -118,39 +142,39 @@ import { z } from "zod";
  */
 
 export const objectIdSchema = z
-  .string()
-  .uuid({ message: "Invalid UUID format" });
+	.string()
+	.uuid({ message: "Invalid UUID format" });
 
 export const paginationQuerySchema = z.object({
-  page: z.coerce.number().int().min(1).default(1).optional(),
-  limit: z.coerce.number().int().min(1).max(100).default(10).optional(),
+	page: z.coerce.number().int().min(1).default(1).optional(),
+	limit: z.coerce.number().int().min(1).max(100).default(10).optional(),
 });
 
 export const productSortBySchema = z
-  .enum([
-    "name",
-    "basePrice", // or 'price' depending on your variant structure preference
-    "averageRating",
-    "createdAt",
-    "updatedAt",
-  ])
-  .default("createdAt");
+	.enum([
+		"name",
+		"basePrice", // or 'price' depending on your variant structure preference
+		"averageRating",
+		"createdAt",
+		"updatedAt",
+	])
+	.default("createdAt");
 
 export const sortOrderSchema = z.enum(["asc", "desc"]).default("desc");
 
 export const baseProductResponseSchema = {
-  // For OpenAPI, not Zod direct use
-  id: { type: "string", format: "uuid" },
-  name: { type: "string" },
-  slug: { type: "string" },
-  description: { type: "string" },
-  basePrice: { type: "number", format: "float" },
-  currency: { type: "string", example: "USD" },
-  averageRating: { type: "number", format: "float", minimum: 0, maximum: 5 },
-  reviewCount: { type: "integer", minimum: 0 },
-  // Add other common fields like main image, brand, etc.
-  // categoryId: { type: 'string', format: 'uuid' },
-  // sellerId: { type: 'string', format: 'uuid' },
-  createdAt: { type: "string", format: "date-time" },
-  updatedAt: { type: "string", format: "date-time" },
+	// For OpenAPI, not Zod direct use
+	id: { type: "string", format: "uuid" },
+	name: { type: "string" },
+	slug: { type: "string" },
+	description: { type: "string" },
+	basePrice: { type: "number", format: "float" },
+	currency: { type: "string", example: "USD" },
+	averageRating: { type: "number", format: "float", minimum: 0, maximum: 5 },
+	reviewCount: { type: "integer", minimum: 0 },
+	// Add other common fields like main image, brand, etc.
+	// categoryId: { type: 'string', format: 'uuid' },
+	// sellerId: { type: 'string', format: 'uuid' },
+	createdAt: { type: "string", format: "date-time" },
+	updatedAt: { type: "string", format: "date-time" },
 };
